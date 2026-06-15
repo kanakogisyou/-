@@ -1,23 +1,182 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>【無料】連打で爽快！シンプルなクリックゲーム - かなこぎしょう</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>連打測定サイト</title>
 
-  <meta name="description" content="ブラウザで今すぐ遊べる無料のクリックゲーム（連打ゲーム）です。ボタンをたくさんクリックして高得点を目指そう！暇つぶしや指の運動に最適です。">
+<style>
+body{
+    font-family:sans-serif;
+    text-align:center;
+    background:#f5f5f5;
+    margin:0;
+    padding:30px;
+}
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+h1{
+    color:#333;
+}
 
-  <link rel="stylesheet" href="style.css">
+#clickBtn{
+    width:250px;
+    height:250px;
+    font-size:32px;
+    border:none;
+    border-radius:50%;
+    background:#ff7043;
+    color:white;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+#clickBtn:hover{
+    background:#ff5722;
+}
+
+#clickBtn:disabled{
+    background:gray;
+}
+
+#result{
+    font-size:28px;
+    margin-top:20px;
+}
+
+#title{
+    font-size:22px;
+    color:#2196f3;
+    margin-top:10px;
+}
+
+.box{
+    background:white;
+    max-width:600px;
+    margin:auto;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+</style>
 </head>
+
 <body>
 
-  <div class="game-container">
-    <h1>クリックゲーム</h1>
-    <p id="score">0</p>
-    <button onclick="add()">クリック！</button>
-  </div>
+<div class="box">
 
-  <script src="game.js"></script>
+<h1>🔥10秒連打測定🔥</h1>
+
+<p>
+スタートを押したら10秒以内にできるだけ連打！
+</p>
+
+<h2 id="timer">残り10秒</h2>
+
+<button onclick="startGame()">
+スタート
+</button>
+
+<br><br>
+
+<button id="clickBtn" disabled>
+連打！！
+</button>
+
+<div id="result">
+クリック数：0
+</div>
+
+<div id="title"></div>
+
+</div>
+
+<script>
+
+let count = 0;
+let time = 10;
+let playing = false;
+let interval;
+
+const btn = document.getElementById("clickBtn");
+
+btn.addEventListener("click",function(){
+
+    if(!playing) return;
+
+    count++;
+
+    document.getElementById("result").innerHTML =
+    "クリック数：" + count;
+
+});
+
+function startGame(){
+
+    count = 0;
+    time = 10;
+    playing = true;
+
+    btn.disabled = false;
+
+    document.getElementById("result").innerHTML =
+    "クリック数：0";
+
+    document.getElementById("title").innerHTML = "";
+
+    document.getElementById("timer").innerHTML =
+    "残り10秒";
+
+    clearInterval(interval);
+
+    interval = setInterval(function(){
+
+        time--;
+
+        document.getElementById("timer").innerHTML =
+        "残り" + time + "秒";
+
+        if(time <= 0){
+
+            clearInterval(interval);
+
+            playing = false;
+
+            btn.disabled = true;
+
+            let rank = "";
+
+            if(count >= 200){
+                rank = "👑神";
+            }
+            else if(count >= 150){
+                rank = "🔥達人";
+            }
+            else if(count >= 100){
+                rank = "⭐上級者";
+            }
+            else if(count >= 50){
+                rank = "👍中級者";
+            }
+            else{
+                rank = "🌱初心者";
+            }
+
+            let cps = (count / 10).toFixed(1);
+
+            document.getElementById("result").innerHTML =
+            "結果：<br>" +
+            count + "回<br>" +
+            cps + " CPS";
+
+            document.getElementById("title").innerHTML =
+            "称号：" + rank;
+        }
+
+    },1000);
+
+}
+
+</script>
+
 </body>
 </html>
