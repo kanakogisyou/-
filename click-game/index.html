@@ -87,11 +87,22 @@ h1{
 </div>
 
 <div id="title"></div>
-
+<h3 id="bestScore">
+最高記録：0回
+</h3>
 </div>
 
 <script>
+let best = localStorage.getItem("bestScore");
 
+if(best == null){
+    best = 0;
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    document.getElementById("bestScore").innerHTML =
+    "最高記録：" + best + "回";
+});
 let count = 0;
 let time = 10;
 let playing = false;
@@ -170,6 +181,21 @@ function startGame(){
 
             document.getElementById("title").innerHTML =
             "称号：" + rank;
+            if(count > best){
+
+    best = count;
+
+    localStorage.setItem(
+        "bestScore",
+        best
+    );
+
+    document.getElementById("title").innerHTML +=
+    "<br>🎉新記録！";
+}
+
+document.getElementById("bestScore").innerHTML =
+"最高記録：" + best + "回";
         }
 
     },1000);
