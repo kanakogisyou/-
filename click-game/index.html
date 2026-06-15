@@ -107,6 +107,7 @@ let count = 0;
 let time = 10;
 let playing = false;
 let interval;
+let timeMode = 10;
 
 const btn = document.getElementById("clickBtn");
 
@@ -123,9 +124,14 @@ btn.addEventListener("click",function(){
 
 function startGame(){
 
-    count = 0;
-    time = 10;
-    playing = true;
+    timeMode =
+parseInt(
+document.getElementById("mode").value
+);
+
+count = 0;
+time = timeMode;
+playing = true;
 
     btn.disabled = false;
 
@@ -135,7 +141,7 @@ function startGame(){
     document.getElementById("title").innerHTML = "";
 
     document.getElementById("timer").innerHTML =
-    "残り10秒";
+"残り" + time + "秒";
 
     clearInterval(interval);
 
@@ -172,7 +178,7 @@ function startGame(){
                 rank = "🌱初心者";
             }
 
-            let cps = (count / 10).toFixed(1);
+            let cps = (count / timeMode).toFixed(1);
 
             document.getElementById("result").innerHTML =
             "結果：<br>" +
